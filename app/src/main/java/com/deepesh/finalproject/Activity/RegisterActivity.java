@@ -58,7 +58,7 @@ import butterknife.InjectView;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener , LocationListener{
 
     private static final String TAG = "RegisterActivity";
-    private FirebaseDatabase fDB;
+    FirebaseUser fUser;
     private DatabaseReference nDatabase;
     private FirebaseAuth nAuth;
 
@@ -192,7 +192,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if(task.isSuccessful()){
 
                     teacherDetails=new TeacherDetails(name,uname,pass,email,city,addr,subj,mob);
-                    FirebaseUser fUser=nAuth.getCurrentUser();
+                    fUser=nAuth.getCurrentUser();
                     nDatabase.child("teacherDetails").child(fUser.getUid()).setValue(teacherDetails);
 
                     Intent intent=new Intent(RegisterActivity.this,MainActivity.class);
@@ -235,71 +235,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    /*
-    public void RegisterTeacher(){
-
-        String url  = "https://asymmetrical-steril.000webhostapp.com/Teachers/insert.php";
-        //String url1 = "https://asymmetrical-steril.000webhostapp.com/Teachers/insert.php";
-        name=eTxtName.getText().toString().trim(); //it shoud not be declare in OnCreate() caught it will not be initilaized
-        uname=eTxtUname.getText().toString().trim();
-        pass=eTxtPass.getText().toString().trim();
-        email=eTxtEmail.getText().toString().trim();
-        city=eTxtCity.getText().toString().trim();
-        addr=eTxtAddr.getText().toString().trim();
-        subj=eTxtSubj.getText().toString().trim();
-        mob=eTxtMob.getText().toString().trim();
-
-        request=new StringRequest(Request.Method.POST, Util.REGISTER_ENDPOINT, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                try {
-
-                    JSONObject jsonObject = new JSONObject(response);
-                    int success = jsonObject.getInt("success");
-                    String message = jsonObject.getString("message");
-
-                    Toast.makeText(RegisterActivity.this,message,Toast.LENGTH_LONG).show();
-
-                    if(success == 1){
-
-                        editor.putBoolean(Util.KEY_LOGREG,true);
-                        editor.commit();
-
-                        //Intent intent = new Intent(RegisterActivity.this,HomeActivityTwo.class);
-                        Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-
-                }catch (Exception e){
-                    Toast.makeText(RegisterActivity.this,"Exception: "+e,Toast.LENGTH_LONG).show();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(RegisterActivity.this,"Error: "+error,Toast.LENGTH_LONG).show();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("name",name);
-                map.put("uname",uname);
-                map.put("pass",pass);
-                map.put("email",email);
-                map.put("city",city);
-                map.put("addr",addr);
-                map.put("subj",subj);
-                map.put("mob",mob);
-                return map;
-            }
-        };
-
-        requestQueue.add(request);
-    }*/
 
     private boolean validateForm() {
         boolean result = true;
