@@ -1,13 +1,17 @@
 package com.deepesh.finalproject.Activity.Fragment;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.deepesh.finalproject.Adapter.UserAdapter;
+import com.deepesh.finalproject.Model.TeacherDetails;
 import com.deepesh.finalproject.Model.Teachers;
 import com.deepesh.finalproject.Model.Util;
 import com.deepesh.finalproject.R;
@@ -28,7 +33,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,36 +46,38 @@ public class AllTeachersFragment extends Fragment {
 
 
     ListView tListView;
+    EditText eTxtSearch;
     Teachers teachers;
     UserAdapter userAdapter;
 
-    ArrayList<Teachers> teacheList;
+    //ArrayList<Teachers> teacheList;
 
+    List<TeacherDetails> teacherDetailses;
     RequestQueue requestQueue;
     StringRequest stringRequest;
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+
+
     public AllTeachersFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        requestQueue = Volley.newRequestQueue(getContext());
+        //requestQueue = Volley.newRequestQueue(getContext());
         tListView=(ListView)view.findViewById(R.id.tListView);
-        teacheList=new ArrayList<Teachers>();
-        retrieveFromServer();
+        eTxtSearch=(EditText)view.findViewById(R.id.eTxtSearch);
+        //teacheList=new ArrayList<Teachers>();
+
+
+        //Boolean UpdateMode = rcv.hasExtra(Util.KEY_USER);
+
+        //retrieveFromServer();
         super.onViewCreated(view, savedInstanceState);
     }
 
-    /*@Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        tListView=(ListView)view.findViewById(R.id.tListView);
-        teacheList=new ArrayList<Teachers>();
-        retrieveFromServer();
-        super.onViewCreated(view, savedInstanceState);
-    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,7 +87,7 @@ public class AllTeachersFragment extends Fragment {
     }
 
 
-    private void retrieveFromServer() {
+    /*private void retrieveFromServer() {
         stringRequest=new StringRequest(Request.Method.GET, Util.RETRIEVE_ENDPOINT, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -93,7 +104,7 @@ public class AllTeachersFragment extends Fragment {
                         JSONArray jsonArray = jsonObject.getJSONArray("users");
 
                         int id = 0;
-                        String n="",u="",m="",e="",p="",a="",s="";
+                        String n="",u="",m="",e="",c="",p="",a="",s="";
 
                         teacheList = new ArrayList<Teachers>();
                         for(int i=0;i<jsonArray.length();i++){
@@ -101,21 +112,22 @@ public class AllTeachersFragment extends Fragment {
                             id = jObj.getInt("tid"); // String Inputs are the column names of your table
                             n = jObj.getString("name");
                             u = jObj.getString("uname");
-                            m = jObj.getString("mob");
-                            p = jObj.getString("email");
                             e = jObj.getString("pass");
+                            p = jObj.getString("email");
+                            c = jObj.getString("city");
                             a = jObj.getString("addr");
+                            m = jObj.getString("mob");
                             s = jObj.getString("subj");
                             //p = jObj.getString("password"); //it will give an Error Because it gets tthe data From Server DataBase not from th User.java
                             //so it Must be Column Name of Server DataBase Table
 
-                            teachers = new Teachers(id,n,u,p,e,a,m,s);
+                            teachers = new Teachers(id,n,u,p,e,c,a,s,m);
                             //Toast.makeText(getContext(),teachers.toString(),Toast.LENGTH_LONG).show();
                             teacheList.add(teachers);
                         }
 
-                        /*userAdapter = new UserAdapter(HomeActivity.this,R.layout.listitem,userList);
-                        listView.setAdapter(userAdapter);*/
+                        *//*userAdapter = new UserAdapter(HomeActivity.this,R.layout.listitem,userList);
+                        listView.setAdapter(userAdapter);*//*
                         userAdapter=new UserAdapter(getContext(),R.layout.list_view,teacheList);
                         tListView.setAdapter(userAdapter);
 
@@ -141,12 +153,35 @@ public class AllTeachersFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map=new HashMap<>();
                 //map.put("id",String.valueOf(user.getUid())); nothing wil happen bacause id is not declare as variable
+                //Bundle args = new Bundle();
+
                 map.put("tid",String.valueOf(teachers.getTid()));
                 return map;
             }
         };
 
         requestQueue.add(stringRequest);
-    }
+
+        eTxtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                /*//*************************************************
+                //adapter.filter(charSequence.toString());
+
+                userAdapter.getFilter().filter(s);
+                //Toast.makeText(getContext(), " "+s, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //userAdapter.getFilter().filter(s);
+            }
+        });
+    }*/
 
 }

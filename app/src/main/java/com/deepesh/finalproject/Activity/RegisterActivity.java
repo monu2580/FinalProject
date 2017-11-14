@@ -9,9 +9,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.speech.tts.TextToSpeech;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,9 +28,21 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.deepesh.finalproject.Model.TeacherDetails;
 import com.deepesh.finalproject.Model.Teachers;
 import com.deepesh.finalproject.Model.Util;
 import com.deepesh.finalproject.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -42,6 +57,33 @@ import butterknife.InjectView;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener , LocationListener{
 
+    private static final String TAG = "RegisterActivity";
+    private FirebaseDatabase fDB;
+    private DatabaseReference nDatabase;
+    private FirebaseAuth nAuth;
+
+    private Button btnLogin;
+    private Button btnRegister;
+
+    private EditText eTxtName;
+    private EditText eTxtUname;
+
+    private EditText eTxtCity;
+    private EditText eTxtAddr;
+    private Button btnLoc;
+    private EditText eTxtPass;
+    private EditText eTxtEmail;
+    private EditText eTxtSubj;
+    private EditText eTxtMob;
+
+    LocationManager locatiomanager;
+    Double latitude, longitude;
+
+    TeacherDetails teacherDetails;
+
+
+/*
+
     @InjectView(R.id.btnLogin)
     Button btnLogin;
     @InjectView(R.id.btnRegister)
@@ -53,6 +95,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     EditText eTxtUname;
     @InjectView(R.id.eTxtEmail)
     EditText eTxtEmail;
+
+    @InjectView(R.id.eTxtCity)
+    EditText eTxtCity;
 
     @InjectView(R.id.eTxtAddr)
     EditText eTxtAddr;
@@ -69,6 +114,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     EditText eTxtMob;
     @InjectView(R.id.eTxtPassword)
     EditText eTxtPassword;
+*/
 
     RequestQueue requestQueue;
     StringRequest request;
@@ -81,34 +127,124 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     //String url = "https://asymmetrical-steril.000webhostapp.com/User/insert.php";
     Teachers teachers;
 
-    String name, uname,email,pass,mob,addr,subj;
+    int id=0;
+    String name, uname,email,city,pass,mob,addr,subj,currentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        ButterKnife.inject(this);
-        requestQueue = Volley.newRequestQueue(this);
+        FirebaseApp.initializeApp(this);
+        nDatabase = FirebaseDatabase.getInstance().getReference();
+        nAuth = FirebaseAuth.getInstance();
 
-        teachers=new Teachers();
+        eTxtName=(EditText)findViewById(R.id.eTxtName);
+        eTxtUname=(EditText)findViewById(R.id.eTxtUsername);
+        eTxtPass=(EditText)findViewById(R.id.eTxtPassword);
+        eTxtEmail=(EditText)findViewById(R.id.eTxtEmail);
+        eTxtCity=(EditText)findViewById(R.id.eTxtCity);
+        eTxtAddr=(EditText)findViewById(R.id.eTxtAddr);
+        eTxtSubj=(EditText)findViewById(R.id.eTxtSub);
+        eTxtMob=(EditText)findViewById(R.id.eTxtMob);
+        
+        btnLoc=(Button)findViewById(R.id.btnLocation);
+        btnLogin=(Button)findViewById(R.id.btnLogin);
+        btnRegister=(Button)findViewById(R.id.btnRegister);
+
+        /*ButterKnife.inject(this);
+        requestQueue = Volley.newRequestQueue(this);
+*/
+        //teachers=new Teachers();
+        teacherDetails=new TeacherDetails();
         locatiomanager=(LocationManager)getSystemService(LOCATION_SERVICE);
 
-        imgLoc.setOnClickListener(this);
+        btnLoc.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
 
         preferences = getSharedPreferences(Util.PREFS_NAME,MODE_PRIVATE);
         editor = preferences.edit();
     }
+    private void RegisterTeacher() {
+        Log.d(TAG, "RegisterTeacher");
+        if (!validateForm()) {
+            return;
+        }
+
+
+
+
+        //showProgressDialog();
+        name=eTxtName.getText().toString().trim(); //it shoud not be declare in OnCreate() caught it will not be initilaized
+        uname=eTxtUname.getText().toString().trim();
+        pass=eTxtPass.getText().toString().trim();
+        email=eTxtEmail.getText().toString().trim();
+        city=eTxtCity.getText().toString().trim();
+        addr=eTxtAddr.getText().toString().trim();
+        subj=eTxtSubj.getText().toString().trim();
+        mob=eTxtMob.getText().toString().trim();
+
+        nAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if(task.isSuccessful()){
+
+                    teacherDetails=new TeacherDetails(name,uname,pass,email,city,addr,subj,mob);
+                    FirebaseUser fUser=nAuth.getCurrentUser();
+                    nDatabase.child("teacherDetails").child(fUser.getUid()).setValue(teacherDetails);
+
+                    Intent intent=new Intent(RegisterActivity.this,MainActivity.class);
+                    intent.putExtra(Util.KEY_USER,teacherDetails);
+                    startActivity(intent);
+
+                    Toast.makeText(RegisterActivity.this, "Teacher Registration Successful", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(RegisterActivity.this, "Teacher Registration unSuccessful", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        nDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                teacherDetails = dataSnapshot.getValue(TeacherDetails.class);
+                System.out.println(teacherDetails.toString());
+                //Log.d(TAG, "Value is: " + userDetails.toString());
+                //Toast.makeText(RegisterActivity.this, "Teachers Details"+userDetails, Toast.LENGTH_SHORT).show();
+
+
+                /*for(DataSnapshot ds:dataSnapshot.getChildren()){
+                    UserDetails userDetails = dataSnapshot.getValue(UserDetails.class);
+
+                }*/
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+
+
+
+
+
+    }
+
+    /*
     public void RegisterTeacher(){
 
         String url  = "https://asymmetrical-steril.000webhostapp.com/Teachers/insert.php";
         //String url1 = "https://asymmetrical-steril.000webhostapp.com/Teachers/insert.php";
         name=eTxtName.getText().toString().trim(); //it shoud not be declare in OnCreate() caught it will not be initilaized
         uname=eTxtUname.getText().toString().trim();
-        pass=eTxtPassword.getText().toString().trim();
+        pass=eTxtPass.getText().toString().trim();
         email=eTxtEmail.getText().toString().trim();
+        city=eTxtCity.getText().toString().trim();
         addr=eTxtAddr.getText().toString().trim();
         subj=eTxtSubj.getText().toString().trim();
         mob=eTxtMob.getText().toString().trim();
@@ -154,6 +290,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 map.put("uname",uname);
                 map.put("pass",pass);
                 map.put("email",email);
+                map.put("city",city);
                 map.put("addr",addr);
                 map.put("subj",subj);
                 map.put("mob",mob);
@@ -162,39 +299,62 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         };
 
         requestQueue.add(request);
-    }
+    }*/
 
-    @Override
-    public void onClick(View view) {
-        int id=view.getId();
-        switch (id){
-            case R.id.btnLogin:
-                Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.btnRegister:
-                /*Intent intent1=new Intent(RegisterActivity.this,MainActivity.class);
-                startActivity(intent1);*/
-
-                teachers.setName(name);
-                teachers.setUname(uname);
-                teachers.setPass(pass);
-                teachers.setEmail(email);
-                teachers.setAddr(addr);
-                teachers.setSubj(subj);
-                teachers.setMob(mob);
-                RegisterTeacher();
-                break;
-            case R.id.imageView:
-                locatiomanager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                }else {
-                    locatiomanager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 5, this);
-                }
-                break;
-
+    private boolean validateForm() {
+        boolean result = true;
+        if (TextUtils.isEmpty(eTxtName.getText().toString())) {
+            eTxtName.setError("Required");
+            result = false;
+        } else {
+            eTxtName.setError(null);
         }
+
+        if (TextUtils.isEmpty(eTxtUname.getText().toString())) {
+            eTxtUname.setError("Required");
+            result = false;
+        } else {
+            eTxtUname.setError(null);
+        }
+        if (TextUtils.isEmpty(eTxtPass.getText().toString())) {
+            eTxtPass.setError("Required");
+            result = false;
+        } else {
+            eTxtPass.setError(null);
+        }
+
+        if (TextUtils.isEmpty(eTxtEmail.getText().toString())) {
+            eTxtEmail.setError("Required");
+            result = false;
+        } else {
+            eTxtEmail.setError(null);
+        }
+        if (TextUtils.isEmpty(eTxtCity.getText().toString())) {
+            eTxtCity.setError("Required");
+            result = false;
+        } else {
+            eTxtCity.setError(null);
+        }
+        if (TextUtils.isEmpty(eTxtAddr.getText().toString())) {
+            eTxtAddr.setError("Required");
+            result = false;
+        } else {
+            eTxtAddr.setError(null);
+        }
+        if (TextUtils.isEmpty(eTxtSubj.getText().toString())) {
+            eTxtSubj.setError("Required");
+            result = false;
+        } else {
+            eTxtSubj.setError(null);
+        }
+        if (TextUtils.isEmpty(eTxtMob.getText().toString())) {
+            eTxtMob.setError("Required");
+            result = false;
+        } else {
+            eTxtMob.setError(null);
+        }
+
+        return result;
     }
 
     @Override
@@ -212,7 +372,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 for(int i=0;i<addr.getMaxAddressLineIndex();i++){
                     buffer.append(addr.getAddressLine(i));
                 }
-                eTxtAddr.setText(" "+buffer.toString());
+                currentLocation=buffer.toString();
+                eTxtAddr.setText(""+buffer.toString());
             }
         }catch (Exception e){
 
@@ -233,4 +394,41 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void onProviderDisabled(String provider) {
 
     }
+
+    @Override
+    public void onClick(View view) {
+        int id=view.getId();
+        switch (id){
+            case R.id.btnLogin:
+                Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btnRegister:
+                /*Intent intent1=new Intent(RegisterActivity.this,MainActivity.class);
+                startActivity(intent1);
+                teachers.setName(name);
+                teachers.setUname(uname);
+                teachers.setPass(pass);
+                teachers.setEmail(email);
+                teachers.setCity(city);
+                teachers.setAddr(addr);
+                teachers.setSubj(subj);
+                teachers.setMob(mob);*/
+                RegisterTeacher();
+                break;
+            case R.id.btnLocation:
+                locatiomanager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Location not fetch due to permission issues", Toast.LENGTH_SHORT).show();
+                }else {
+                    locatiomanager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 5, this);
+                    //eTxtAddr.setText(locatiomanager);
+                    Toast.makeText(this, "Current location"+currentLocation, Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+        }
+    }
+
+
 }

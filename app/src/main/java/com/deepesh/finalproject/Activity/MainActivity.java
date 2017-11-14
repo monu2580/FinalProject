@@ -1,5 +1,6 @@
 package com.deepesh.finalproject.Activity;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,17 +19,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.deepesh.finalproject.Activity.Fragment.AllTeachersFragment;
 import com.deepesh.finalproject.Activity.Fragment.DetailsFragment;
 import com.deepesh.finalproject.Activity.Fragment.SearchFragment;
+import com.deepesh.finalproject.Model.Teachers;
+import com.deepesh.finalproject.Model.Util;
 import com.deepesh.finalproject.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
     AllTeachersFragment allTeachersFragment;
     DetailsFragment detailsFragment;
     SearchFragment searchFragment;
+
+    Teachers teachers;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -62,6 +69,13 @@ public class MainActivity extends AppCompatActivity {
         allTeachersFragment=new AllTeachersFragment();
         detailsFragment=new DetailsFragment();
         searchFragment=new SearchFragment();
+
+        //Intent rcv = getIntent();
+        //teachers=(Teachers) rcv.getSerializableExtra(Util.KEY_USER);
+        //teachers=new Teachers();
+        //Toast.makeText(this, teachers+"  ", Toast.LENGTH_SHORT).show();
+
+        //Boolean UpdateMode = rcv.hasExtra(Util.KEY_USER);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -98,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
             return true;
         }
 
@@ -125,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+
             fragment.setArguments(args);
             return fragment;
         }
@@ -158,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     return allTeachersFragment;
                 case 2:
+
                     return detailsFragment;
 
 

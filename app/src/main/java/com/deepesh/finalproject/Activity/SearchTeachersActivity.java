@@ -80,7 +80,7 @@ public class SearchTeachersActivity extends AppCompatActivity {
                         JSONArray jsonArray = jsonObject.getJSONArray("users");
 
                         int id = 0;
-                        String n="",u="",m="",e="",p="",a="",s="";
+                        String n="",u="",m="",e="",c="",p="",a="",s="";
 
                         teacheList = new ArrayList<>();
                         for(int i=0;i<jsonArray.length();i++){
@@ -88,15 +88,16 @@ public class SearchTeachersActivity extends AppCompatActivity {
                             id = jObj.getInt("tid"); // String Inputs are the column names of your table
                             n = jObj.getString("name");
                             u = jObj.getString("uname");
-                            m = jObj.getString("mob");
-                            p = jObj.getString("email");
                             e = jObj.getString("pass");
+                            p = jObj.getString("email");
+                            c = jObj.getString("city");
                             a = jObj.getString("addr");
+                            m = jObj.getString("mob");
                             s = jObj.getString("subj");
                             //p = jObj.getString("password"); //it will give an Error Because it gets tthe data From Server DataBase not from th User.java
                             //so it Must be Column Name of Server DataBase Table
 
-                            teachers = new Teachers(id,n,u,p,e,a,m,s);
+                            teachers = new Teachers(id,n,u,p,e,c,a,s,m);
                             teacheList.add(teachers);
                         }
 

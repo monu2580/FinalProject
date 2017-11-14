@@ -9,6 +9,8 @@ public class Util {
     public static final String REGISTER_ENDPOINT = URI+"insert.php";
     public static final String LOGIN_ENDPOINT = URI+"login.php";
     public static final String RETRIEVE_ENDPOINT = URI+"retrieve.php";
+    public static final String TUPDATE1_ENDPOINT = URI+"tupdate1.php";
+    public static final String SEARCH_ENDPOINT = URI+"tsearch.php";
     public static final String DELETE_ENDPOINT = URI+"deleteuser.php";
     public static final String UPDATE_ENDPOINT = URI+"updateuser.php";
 

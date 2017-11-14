@@ -3,44 +3,32 @@ package com.deepesh.finalproject.Model;
 import java.io.Serializable;
 
 /**
- * Created by Deepesh on 24-10-2017.
+ * Created by Deepesh on 11-11-2017.
  */
 
-public class Teachers implements Serializable{
+public class TeacherDetails implements Serializable{
 
-
-    int tid;
     String name;
     String uname;
     String pass;
     String email;
     String city;
     String addr;
-    String mob;
     String subj;
+    String mob;
 
-    public Teachers() {
-
+    public TeacherDetails() {
     }
 
-    public Teachers(int tid, String name, String uname, String pass, String email, String city, String addr, String mob, String subj) {
-        this.tid = tid;
+    public TeacherDetails(String name, String uname, String pass, String email, String city, String addr, String subj, String mob) {
         this.name = name;
         this.uname = uname;
         this.pass = pass;
         this.email = email;
         this.city = city;
         this.addr = addr;
-        this.mob = mob;
         this.subj = subj;
-    }
-
-    public int getTid() {
-        return tid;
-    }
-
-    public void setTid(int tid) {
-        this.tid = tid;
+        this.mob = mob;
     }
 
     public String getName() {
@@ -91,14 +79,6 @@ public class Teachers implements Serializable{
         this.addr = addr;
     }
 
-    public String getMob() {
-        return mob;
-    }
-
-    public void setMob(String mob) {
-        this.mob = mob;
-    }
-
     public String getSubj() {
         return subj;
     }
@@ -107,18 +87,25 @@ public class Teachers implements Serializable{
         this.subj = subj;
     }
 
+    public String getMob() {
+        return mob;
+    }
+
+    public void setMob(String mob) {
+        this.mob = mob;
+    }
+
     @Override
     public String toString() {
-        return "Teachers{" +
-                "tid=" + tid +
-                ", name='" + name + '\'' +
+        return "TeacherDetails{" +
+                "name='" + name + '\'' +
                 ", uname='" + uname + '\'' +
                 ", pass='" + pass + '\'' +
                 ", email='" + email + '\'' +
                 ", city='" + city + '\'' +
                 ", addr='" + addr + '\'' +
-                ", mob='" + mob + '\'' +
                 ", subj='" + subj + '\'' +
+                ", mob='" + mob + '\'' +
                 '}';
     }
 }

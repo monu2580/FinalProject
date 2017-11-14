@@ -14,17 +14,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <android.support.v7.widget.SearchView
+            <EditText
                 android:layout_width="match_parent"
+                android:id="@+id/eTxtSearch"
+                android:drawableRight="@android:drawable/ic_menu_search"
                 android:layout_height="wrap_content"
-                android:id="@+id/searchView">
-
-            </android.support.v7.widget.SearchView>
+                android:background="@drawable/gradientrotatecorner"
+                android:hint="Search...."/>
         </LinearLayout>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -32,14 +31,12 @@
                 <ListView
                     android:id="@+id/tListView"
                     android:layout_width="match_parent"
-                    app:layout_constraintTop_toBottomOf="@+id/searchView"
                     android:layout_height="470dp">
 
 
                 </ListView>
 
             </LinearLayout>
-        </ScrollView>
 
 
     </LinearLayout>
