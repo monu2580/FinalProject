@@ -14,21 +14,32 @@ public class TeacherDetails implements Serializable{
     String email;
     String city;
     String addr;
-    String subj;
     String mob;
+    String subj;
+    Double lang;
+    Double lati;
+    String token;
+    String uid;
+    String imageUrl;
+
 
     public TeacherDetails() {
     }
 
-    public TeacherDetails(String name, String uname, String pass, String email, String city, String addr, String subj, String mob) {
+    public TeacherDetails(String name, String uname, String pass, String email, String city, String addr, String mob, String subj, Double lang, Double lati, String token, String uid, String imageUrl) {
         this.name = name;
         this.uname = uname;
         this.pass = pass;
         this.email = email;
         this.city = city;
         this.addr = addr;
-        this.subj = subj;
         this.mob = mob;
+        this.subj = subj;
+        this.lang = lang;
+        this.lati = lati;
+        this.token = token;
+        this.uid = uid;
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -79,6 +90,14 @@ public class TeacherDetails implements Serializable{
         this.addr = addr;
     }
 
+    public String getMob() {
+        return mob;
+    }
+
+    public void setMob(String mob) {
+        this.mob = mob;
+    }
+
     public String getSubj() {
         return subj;
     }
@@ -87,12 +106,44 @@ public class TeacherDetails implements Serializable{
         this.subj = subj;
     }
 
-    public String getMob() {
-        return mob;
+    public Double getLang() {
+        return lang;
     }
 
-    public void setMob(String mob) {
-        this.mob = mob;
+    public void setLang(Double lang) {
+        this.lang = lang;
+    }
+
+    public Double getLati() {
+        return lati;
+    }
+
+    public void setLati(Double lati) {
+        this.lati = lati;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override
@@ -104,8 +155,13 @@ public class TeacherDetails implements Serializable{
                 ", email='" + email + '\'' +
                 ", city='" + city + '\'' +
                 ", addr='" + addr + '\'' +
-                ", subj='" + subj + '\'' +
                 ", mob='" + mob + '\'' +
+                ", subj='" + subj + '\'' +
+                ", lang=" + lang +
+                ", lati=" + lati +
+                ", token='" + token + '\'' +
+                ", uid='" + uid + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
 }

@@ -5,6 +5,8 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:scrollbars="none"
+    android:background="@drawable/gradient6"
     android:padding="10dp"
     android:fillViewport="false">
 
@@ -25,43 +27,89 @@
             android:paddingBottom="20dp"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgProfilepic"
+                android:layout_width="80dp"
+                android:layout_height="90dp"
+                android:layout_marginTop="4dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:srcCompat="@drawable/teacher"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp" />
-
+                android:src="@drawable/profilepic1"
+                />
+            <!--
+            <android.support.v4.widget.CircleImageView
+                android:id="@+id/imgProfilepic"
+                android:layout_width="80dp"
+                android:layout_height="90dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/appicon"/>-->
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Update details..."
+                android:textColor="@color/color6"
+                android:textStyle="bold"
                 android:textAlignment="center"
                 android:textSize="20dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                app:layout_constraintTop_toBottomOf="@+id/imgProfilepic" />
 
 
-            <EditText
-                android:id="@+id/eTxtName"
-                android:layout_width="0dp"
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/eCardName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Name"
+                android:layout_marginTop="30dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="30dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                card_view:cardElevation="@dimen/cardview_default_elevation"
+                card_view:cardUseCompatPadding="true">
 
+                <EditText
+                    android:id="@+id/eTxtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Name"
+                    android:inputType="textPersonName"
+                    android:textAlignment="center" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/eCardEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eCardName"
+                card_view:cardElevation="@dimen/cardview_default_elevation"
+                card_view:cardUseCompatPadding="true">
+
+                <EditText
+                    android:id="@+id/eTxtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:textAlignment="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+
+            </android.support.v7.widget.CardView>
 
             <EditText
                 android:id="@+id/eTxtUsername"
@@ -70,118 +118,155 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:hint="Username"
+                android:visibility="gone"
                 android:textAlignment="center"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/eTxtName" />
+                app:layout_constraintTop_toBottomOf="@+id/eCardName" />
 
-            <EditText
-                android:id="@+id/eTxtPassword"
-                android:layout_width="0dp"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/eCardPassword"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Password"
-                android:textAlignment="center"
-                android:inputType="textPassword"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="9dp"
-                app:layout_constraintTop_toBottomOf="@+id/eTxtUsername" />
-
-
-
-            <EditText
-                android:id="@+id/eTxtEmail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:ems="10"
-                android:inputType="textEmailAddress"
-                android:hint="Email"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/eTxtPassword" />
-            <EditText
-                android:id="@+id/eTxtCity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:ems="10"
-                android:inputType="textEmailAddress"
-                android:hint="City"
                 app:layout_constraintLeft_toLeftOf="parent"
+                android:visibility="gone"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eCardEmail"
+                card_view:cardElevation="@dimen/cardview_default_elevation"
+                card_view:cardUseCompatPadding="true">
+
+                <EditText
+                    android:id="@+id/eTxtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:textAlignment="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/eCardCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/eTxtEmail" />
-
-            <EditText
-                android:id="@+id/eTxtAddr"
-                android:layout_width="281dp"
-                android:layout_height="41dp"
-                android:textAlignment="center"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Address...."
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="17dp"
-                app:layout_constraintTop_toBottomOf="@+id/eTxtCity"
-                app:layout_constraintRight_toLeftOf="@+id/imageLocation"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="8dp"
-                tools:layout_editor_absoluteY="372dp"
-                tools:layout_editor_absoluteX="19dp" />
-
-            <ImageView
-                android:id="@+id/imageLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="-4dp"
-                android:layout_marginTop="25dp"
-                android:clickable="true"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eTxtCity"
-                app:srcCompat="@android:drawable/ic_menu_mylocation" />
-
-
-
-            <EditText
-                android:id="@+id/eTxtMob"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:ems="10"
-                android:inputType="phone"
-                android:hint="mob no."
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintHorizontal_bias="0.502"
-                android:layout_marginTop="18dp"
-                app:layout_constraintTop_toBottomOf="@+id/eTxtAddr" />
+                app:layout_constraintTop_toBottomOf="@+id/eCardPassword"
+                card_view:cardElevation="@dimen/cardview_default_elevation"
+                card_view:cardUseCompatPadding="true">
 
-            <EditText
-                android:id="@+id/eTxtSub"
-                android:layout_width="0dp"
+                <EditText
+                    android:id="@+id/eTxtCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:hint="City"
+                    android:inputType="text"
+                    android:textAlignment="center" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/eCardAddr"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:ems="10"
-                android:inputType="text"
-                android:hint="Subject"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/eTxtMob" />
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/btnLocation"
+                app:layout_constraintTop_toBottomOf="@+id/eCardCity"
+                android:orientation="horizontal"
+                card_view:cardElevation="@dimen/cardview_default_elevation"
+                card_view:cardUseCompatPadding="true">
+
+                <EditText
+                    android:id="@+id/eTxtAddr"
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="45dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Address....."
+                    android:inputType="text"
+                    app:layout_constraintRight_toLeftOf="@+id/btnLocation"
+                    android:textAlignment="center" />
+
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/btnLocation"
+                android:layout_width="57dp"
+                android:layout_height="39dp"
+                android:layout_marginTop="13dp"
+                android:background="@android:drawable/ic_menu_mylocation"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eCardCity" />
+
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/eCardMob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eCardAddr"
+                card_view:cardElevation="@dimen/cardview_default_elevation"
+                card_view:cardUseCompatPadding="true">
+
+                <EditText
+                    android:id="@+id/eTxtMob"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Mobile no."
+                    android:inputType="phone"
+                    android:textAlignment="center" />
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/eCardSub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eCardMob"
+                card_view:cardElevation="@dimen/cardview_default_elevation"
+                card_view:cardUseCompatPadding="true">
+
+                <EditText
+                    android:id="@+id/eTxtSub"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Subject"
+                    android:inputType="text"
+                    android:textAlignment="center" />
+            </android.support.v7.widget.CardView>
+
+
 
             <Button
                 android:id="@+id/btnUpdate"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="Update"
+                android:background="@drawable/gradient6"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="23dp"
-                app:layout_constraintTop_toBottomOf="@+id/eTxtSub" />
+                app:layout_constraintTop_toBottomOf="@+id/eCardSub" />
 
 
         </android.support.constraint.ConstraintLayout>

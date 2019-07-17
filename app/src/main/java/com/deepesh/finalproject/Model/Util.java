@@ -16,6 +16,11 @@ public class Util {
 
     public static final String PREFS_NAME = "finalproject";
     public static final String KEY_LOGREG = "keyLoginRegister";
+    public static final String KEY_LOG = "keyLogin";
+    public static final String KEY_ST = "studentorteacher";
+    public static final String KEY_STD = "student";
+    public static final String KEY_THR = "teacher";
+    public static final String KEY_T$S = "youare";
     public static final String KEY_RETRIEVE = "keyRetrieve";
     public static final String KEY_USER = "keyUser";
 }

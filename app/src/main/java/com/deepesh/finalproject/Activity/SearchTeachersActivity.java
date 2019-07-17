@@ -53,7 +53,7 @@ public class SearchTeachersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_teachers);
         
-        ButterKnife.inject(this);
+        //ButterKnife.inject(this);
 
         requestQueue= Volley.newRequestQueue(this);
 
@@ -103,8 +103,8 @@ public class SearchTeachersActivity extends AppCompatActivity {
 
                         /*userAdapter = new UserAdapter(HomeActivity.this,R.layout.listitem,userList);
                         listView.setAdapter(userAdapter);*/
-                        userAdapter=new UserAdapter(SearchTeachersActivity.this,R.layout.list_view,teacheList);
-                        tListView.setAdapter(userAdapter);
+                        //userAdapter=new UserAdapter(SearchTeachersActivity.this,R.layout.list_view,teacheList);
+                        //tListView.setAdapter(userAdapter);
 
                     }else{
                         Toast.makeText(SearchTeachersActivity.this,message,Toast.LENGTH_LONG).show();

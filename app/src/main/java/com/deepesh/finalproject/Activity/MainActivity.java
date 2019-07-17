@@ -1,6 +1,7 @@
 package com.deepesh.finalproject.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.deepesh.finalproject.Activity.Fragment.AllTeachersFragment;
 import com.deepesh.finalproject.Activity.Fragment.DetailsFragment;
 import com.deepesh.finalproject.Activity.Fragment.SearchFragment;
+import com.deepesh.finalproject.Activity.Fragment.StudentsFragment;
 import com.deepesh.finalproject.Model.Teachers;
 import com.deepesh.finalproject.Model.Util;
 import com.deepesh.finalproject.R;
@@ -34,8 +36,15 @@ public class MainActivity extends AppCompatActivity {
     AllTeachersFragment allTeachersFragment;
     DetailsFragment detailsFragment;
     SearchFragment searchFragment;
+    StudentsFragment studentsfragment;
+
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     Teachers teachers;
+
+    static int maxPageCount;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -69,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
         allTeachersFragment=new AllTeachersFragment();
         detailsFragment=new DetailsFragment();
         searchFragment=new SearchFragment();
+        studentsfragment=new StudentsFragment();
+
+        preferences = getSharedPreferences(Util.PREFS_NAME,MODE_PRIVATE);
+        editor = preferences.edit();
 
         //Intent rcv = getIntent();
         //teachers=(Teachers) rcv.getSerializableExtra(Util.KEY_USER);
@@ -79,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setOffscreenPageLimit(3);//it Must be (No. of Fragments-1)
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -94,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 
 
     @Override
@@ -113,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             FirebaseAuth.getInstance().signOut();
+            editor.clear();
+            editor.commit();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return true;
@@ -172,12 +189,14 @@ public class MainActivity extends AppCompatActivity {
 
             switch (position){
                 case 0:
-                    return searchFragment;
-                case 1:
                     return allTeachersFragment;
-                case 2:
 
+                case 1:
+                    return studentsfragment;
+                case 2:
                     return detailsFragment;
+                case 3:
+                    return searchFragment;
 
 
             }
@@ -187,19 +206,21 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 4 total pages.
+            return 4;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Search";
+                    return "TEACHERS";
                 case 1:
-                    return "All Teachers";
+                    return "STUDENTS";
                 case 2:
-                    return "Your Details";
+                    return "Update";
+                case 3:
+                    return "Map";
             }
             return null;
         }

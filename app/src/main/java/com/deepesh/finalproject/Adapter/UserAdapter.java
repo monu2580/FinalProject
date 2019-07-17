@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.deepesh.finalproject.Model.TeacherDetails;
 import com.deepesh.finalproject.Model.Teachers;
 import com.deepesh.finalproject.R;
 
@@ -22,17 +23,18 @@ import static android.R.id.list;
  * Created by Deepesh on 28-10-2017.
  */
 
-public class UserAdapter extends ArrayAdapter<Teachers> {
+public class UserAdapter extends ArrayAdapter<TeacherDetails> {
 
     Context context;
     int resource;
-    ArrayList<Teachers> teacherList;
+    //ArrayList<Teachers> teacherList;
+    ArrayList<TeacherDetails> teacherList;
 
     TextView txtName;
     TextView txtAddr;
     TextView txtSubj;
 
-    public UserAdapter(@NonNull Context context,@LayoutRes int resource,@NonNull  ArrayList<Teachers> objects) {
+    public UserAdapter(@NonNull Context context,@LayoutRes int resource,@NonNull  ArrayList<TeacherDetails> objects) {
         super(context, resource, objects);
 
         this.context=context;
@@ -52,12 +54,12 @@ public class UserAdapter extends ArrayAdapter<Teachers> {
         txtSubj = (TextView)view.findViewById(R.id.eTextSub);
 
         //Teachers teacher = list.get(position);
-        Teachers teacher = teacherList.get(position);
+        TeacherDetails teacherDetails=teacherList.get(position);
 
 
-        txtName.setText(teacher.getName());
-        txtAddr.setText(teacher.getAddr());
-        txtSubj.setText(teacher.getSubj());
+        txtName.setText(teacherDetails.getName());
+        txtAddr.setText(teacherDetails.getAddr());
+        txtSubj.setText(teacherDetails.getSubj());
 
         return view;
     }
